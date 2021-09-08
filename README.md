@@ -1,2 +1,2 @@
 # ML_basics
- simple ML examples
+ Simple examples of ML models (so far linear and logistic regression).
