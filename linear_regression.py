@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 from preprocessing import load
 
+############ data loading #################
 train_X, train_Y, test_X, test_Y = load()
 n_features = train_X.shape[1]
 
