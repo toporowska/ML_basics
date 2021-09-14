@@ -1,43 +1,20 @@
 import torch
-import numpy as np
 import torch.nn as nn
-from random import sample
-import math
-from sklearn.preprocessing import StandardScaler
+from preprocessing import load
 
 ############# logistic regression class #########################
 class LogisticRegression(nn.Module):
     def __init__(self, input_size, output_size):
-        super(LogisticRegression,self).__init__()
+        super().__init__()
         self.linear = nn.Linear(input_size,output_size)
         
     def forward(self,x):
         y_predicted = torch.sigmoid(self.linear(x))
         return y_predicted
 
-############# data preparation ############
-data = np.loadtxt('data.csv', delimiter=",", dtype=np.float32, skiprows=1)
-n_features = data.shape[1]-1
-n_samples = data.shape[0]
-
-#train and test sets
-train_idx = sample(range(n_samples), math.floor(n_samples*0.9))
-test_idx = [i for i in range(n_samples) if i not in train_idx]
-
-#division
-train_X = data[train_idx, 0:n_features]
-test_X = data[test_idx, 0:n_features]
-
-#scalling
-sc = StandardScaler()
-train_X = sc.fit_transform(train_X)
-test_X = sc.transform(test_X)
-
-#conversion to tensors
-train_X = torch.from_numpy(train_X.astype(np.float32))
-test_X = torch.from_numpy(test_X.astype(np.float32))
-train_Y = torch.from_numpy(data[train_idx, -1].astype(np.float32))
-test_Y = torch.from_numpy(data[test_idx, -1].astype(np.float32))
+############ data loading #################
+train_X, train_Y, test_X, test_Y = load()
+n_features = train_X.shape[1]
 
 
 ############ model, loss and optimizer ##############
